@@ -13,7 +13,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 const navigation = [
   { name: "Employees", href: "/employees" },
-  { name: "Customer", href: "/customer" },
+  { name: "Customer", href: "/customers" },
   { name: "Dictionary", href: "/dictionary" },
   { name: "Calender", href: "/calender" },
 ];
