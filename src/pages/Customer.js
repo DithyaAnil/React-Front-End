@@ -1,6 +1,6 @@
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import NotFound from "../components/NotFound";
+import { baseUrl } from "../shared";
 
 export default function Customer() {
   const { id } = useParams();
@@ -8,7 +8,7 @@ export default function Customer() {
   const [customer, setCustomer] = useState();
   const [notFound, setNotFound] = useState();
   useEffect(() => {
-    const url = "http://localhost:8000/api/customers/" + id;
+    const url = baseUrl + "api/customers/" + id;
     fetch(url)
       .then((response) => {
         if (response.status === 404) {
@@ -22,7 +22,8 @@ export default function Customer() {
   }, []);
   return (
     <>
-      {notFound ? <NotFound /> : null}
+      {notFound ? <p>The customer with id {id} was not found </p> : null}
+
       {customer ? (
         <div>
           <p>{customer.id}</p>
