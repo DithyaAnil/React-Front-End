@@ -38,9 +38,9 @@ export default function AddCustomer(props) {
               props.newCustomer(name, industry);
             }}
             id="editModal"
-            classNameNsme="w-full max-w-sm"
+            className="w-full max-w-sm"
           >
-            <div classNameName="md:flex md:items-center mb-6">
+            <div className="md:flex md:items-center mb-6">
               <div className="md:w-1/3">
                 <label
                   className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
@@ -62,7 +62,7 @@ export default function AddCustomer(props) {
                 />
               </div>
             </div>
-            <div classNameName="md:flex md:items-center mb-6">
+            <div className="md:flex md:items-center mb-6">
               <div className="md:w-1/3">
                 <label
                   className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
