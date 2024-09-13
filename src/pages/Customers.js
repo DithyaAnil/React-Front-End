@@ -5,6 +5,7 @@ import AddCustomer from "../components/AddCustomer";
 
 export default function Customers() {
   const [customers, setCustomers] = useState();
+  const [show, setShow] = useState(false);
   useEffect(() => {
     const url = baseUrl + "api/customers/";
     console.log("Fetching...");
@@ -15,6 +16,7 @@ export default function Customers() {
         setCustomers(data.customers);
       });
   }, []);
+
   function newCustomer(name, industry) {
     const data = { name: name, industry: industry };
     const url = baseUrl + "api/customers/";
@@ -31,10 +33,16 @@ export default function Customers() {
         }
         return response.json();
       })
-      .then((data) => {})
+      .then((data) => {
+        toggleShow();
+      })
       .catch((e) => {
         console.log(e);
+        setCustomers([...customers, data.customer]);
       });
+  }
+  function toggleShow() {
+    setShow(!show);
   }
   return (
     <>
@@ -50,7 +58,11 @@ export default function Customers() {
             })
           : null}
       </ul>
-      <AddCustomer newCustomer={newCustomer} />
+      <AddCustomer
+        newCustomer={newCustomer}
+        show={show}
+        toggleShow={toggleShow}
+      />
     </>
   );
 }
