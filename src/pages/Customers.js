@@ -1,18 +1,33 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { baseUrl } from "../shared";
 import AddCustomer from "../components/AddCustomer";
 
 export default function Customers() {
   const [customers, setCustomers] = useState();
   const [show, setShow] = useState(false);
+
+  function toggleShow() {
+    setShow(!show);
+  }
+
+  const navigate = useNavigate();
+
   useEffect(() => {
     const url = baseUrl + "api/customers/";
-    console.log("Fetching...");
-    fetch(url)
-      .then((response) => response.json())
+    fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("access"),
+      },
+    })
+      .then((response) => {
+        if (response.status === 401) {
+          navigate("/login");
+        }
+        return response.json();
+      })
       .then((data) => {
-        console.log(data);
         setCustomers(data.customers);
       });
   }, []);
@@ -41,9 +56,7 @@ export default function Customers() {
         setCustomers([...customers, data.customer]);
       });
   }
-  function toggleShow() {
-    setShow(!show);
-  }
+
   return (
     <>
       <h1>Here are our customers</h1>

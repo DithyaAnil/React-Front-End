@@ -29,7 +29,12 @@ export default function Customer() {
 
   useEffect(() => {
     const url = baseUrl + "api/customers/" + id;
-    fetch(url)
+    fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("access"),
+      },
+    })
       .then((response) => {
         if (response.status === 404) {
           setNotFound(true);
@@ -57,11 +62,14 @@ export default function Customer() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("access"),
       },
       body: JSON.stringify(tempCustomer),
     })
       .then((response) => {
-        console.log("response", response);
+        if (response.status === 401) {
+          navigate("/login");
+        }
         if (!response.ok) throw new Error("something went wrong");
         return response.json();
       })
@@ -94,7 +102,6 @@ export default function Customer() {
                 <input
                   className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                   id="name"
-                  class="m-2 block px-2"
                   type="text"
                   value={tempCustomer.name}
                   onChange={(e) => {
@@ -112,7 +119,6 @@ export default function Customer() {
                 <input
                   className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                   id="industry"
-                  class="m-2 block px-2"
                   type="text"
                   value={tempCustomer.industry}
                   onChange={(e) => {
@@ -155,9 +161,13 @@ export default function Customer() {
                   method: "DELETE",
                   headers: {
                     "Content-Type": "application/json",
+                    Authorization: "Bearer " + localStorage.getItem("access"),
                   },
                 })
                   .then((response) => {
+                    if (response.status === 401) {
+                      navigate("/login");
+                    }
                     if (!response.ok) {
                       throw new Error("something went wrong");
                     }
