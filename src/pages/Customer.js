@@ -1,4 +1,4 @@
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { Link, useParams, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { baseUrl } from "../shared";
 
@@ -10,6 +10,7 @@ export default function Customer() {
   const [notFound, setNotFound] = useState();
   const [changed, setChanged] = useState(false);
   const [error, setError] = useState();
+  const location = useLocation();
 
   useEffect(() => {
     if (!customer) return;
@@ -38,6 +39,12 @@ export default function Customer() {
       .then((response) => {
         if (response.status === 404) {
           setNotFound(true);
+        } else if (response.status === 401) {
+          navigate("/login", {
+            state: {
+              previousUrl: location.pathname,
+            },
+          });
         }
         if (!response.ok) {
           console.log("response", response);
@@ -68,7 +75,11 @@ export default function Customer() {
     })
       .then((response) => {
         if (response.status === 401) {
-          navigate("/login");
+          navigate("/login", {
+            state: {
+              previousUrl: location.pathname,
+            },
+          });
         }
         if (!response.ok) throw new Error("something went wrong");
         return response.json();
