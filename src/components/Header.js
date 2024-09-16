@@ -9,13 +9,13 @@ import {
 } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { NavLink } from "react-router-dom";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { LoginContext } from "../App";
 
 const navigation = [
   { name: "Employees", href: "/employees" },
   { name: "Customer", href: "/customers" },
   { name: "Dictionary", href: "/dictionary" },
-  { name: "Calender", href: "/calender" },
 ];
 
 function classNames(...classes) {
@@ -23,6 +23,10 @@ function classNames(...classes) {
 }
 
 export default function Header(props) {
+  const [loggedIn, setLoggedIn] = useContext(LoginContext);
+
+  useEffect(() => console.log(loggedIn));
+
   return (
     <>
       <Disclosure as="nav" className="bg-gray-800">
@@ -63,6 +67,29 @@ export default function Header(props) {
                       {item.name}
                     </NavLink>
                   ))}
+                  {loggedIn ? (
+                    <NavLink
+                      to={"/login"}
+                      onClick={() => {
+                        setLoggedIn(false);
+                        localStorage.clear();
+                      }}
+                      className="no-underline rounded-md px-3 py-2 text-sm
+                    font-medium text-gray-300 hover:bg-gray-700
+                    hover:text-white"
+                    >
+                      Logout
+                    </NavLink>
+                  ) : (
+                    <NavLink
+                      to={"/login"}
+                      className="no-underline rounded-md px-3 py-2 text-sm
+                    font-medium text-gray-300 hover:bg-gray-700
+                    hover:text-white"
+                    >
+                      Login
+                    </NavLink>
+                  )}
                 </div>
               </div>
             </div>
@@ -98,6 +125,25 @@ export default function Header(props) {
                 {item.name}
               </NavLink>
             ))}
+            {loggedIn ? (
+              <NavLink
+                to={"/login"}
+                onClick={() => {
+                  setLoggedIn(false);
+                  localStorage.clear();
+                }}
+                className="no-underline block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+              >
+                "Logout"
+              </NavLink>
+            ) : (
+              <NavLink
+                to={"/login"}
+                className="no-underline block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+              >
+                "Login"
+              </NavLink>
+            )}
           </div>
         </DisclosurePanel>
       </Disclosure>
