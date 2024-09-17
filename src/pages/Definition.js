@@ -64,7 +64,7 @@ export default function Definition() {
       </>
     );
   }
-  if (errorStatus === true) {
+  if (errorStatus) {
     return (
       <>
         <p>Something went wrong,try again</p>
