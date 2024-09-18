@@ -3,10 +3,10 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { baseUrl } from "../shared";
 import AddCustomer from "../components/AddCustomer";
 import { LoginContext } from "../App";
-
+import useFetch from "../hooks/UseFetch";
 export default function Customers() {
   const [loggedIn, setLoggedIn] = useContext(LoginContext);
-  const [customers, setCustomers] = useState();
+  //const [customers, setCustomers] = useState();
   const [show, setShow] = useState(false);
 
   function toggleShow() {
@@ -15,8 +15,20 @@ export default function Customers() {
 
   const location = useLocation();
   const navigate = useNavigate();
+  const url = baseUrl + "api/customers/";
+  const { data: { customers } = {}, errorStatus } = useFetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("access"),
+    },
+  });
 
   useEffect(() => {
+    console.log(customers, errorStatus);
+  });
+
+  /*useEffect(() => {
     const url = baseUrl + "api/customers/";
     fetch(url, {
       headers: {
@@ -39,8 +51,9 @@ export default function Customers() {
         setCustomers(data.customers);
       });
   }, []);
-
+*/
   function newCustomer(name, industry) {
+    /*
     const data = { name: name, industry: industry };
     const url = baseUrl + "api/customers/";
     fetch(url, {
@@ -63,6 +76,7 @@ export default function Customers() {
         console.log(e);
         setCustomers([...customers, data.customer]);
       });
+  */
   }
 
   return (
