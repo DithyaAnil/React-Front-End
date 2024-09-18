@@ -12,49 +12,9 @@ export default function Definition() {
 
   const location = useLocation();
   const navigate = useNavigate();
-  const [word, errorStatus] = useFetch(
+  const { data: [{ meanings: word }] = [{}], errorStatus } = useFetch(
     "https://api.dictionaryapi.dev/api/v2/entries/en/" + search
   );
-
-  console.log(useParams());
-
-  useEffect(() => {
-    console.log("word:", word, "errorStatus:", errorStatus);
-  });
-  /*useEffect(() => {
-    //const url = "https://httpstat.us/501";
-    const url = "https://api.dictionaryapi.dev/api/v2/entries/en/" + search;
-    fetch(url)
-      .then((response) => {
-        if (response.status === 404) {
-          setNotFound(true);
-        } else if (response.status === 401) {
-          navigate("/login", {
-            state: {
-              previousUrl: location.pathname,
-            },
-          });
-        } else if (response.status === 500) {
-          setError(true);
-        }
-
-        if (!response.ok) {
-          setError(true);
-          throw new Error("Something went wrong");
-        }
-
-        return response.json();
-      })
-      .then((data) => {
-        if (Array.isArray(data)) {
-          setWord(data[0].meanings);
-        }
-      })
-      .catch((e) => {
-        console.log(e.messgae);
-      });
-  }, []);
-*/
 
   if (errorStatus === true) {
     return (
@@ -75,10 +35,10 @@ export default function Definition() {
 
   return (
     <>
-      {word?.[0]?.meanings ? (
+      {word ? (
         <>
           <h1>Here is the definition:</h1>
-          {word[0].meanings.map((meaning) => {
+          {word.map((meaning) => {
             return (
               <p key={uuidv4()}>
                 {meaning.partOfSpeech + " :"}
