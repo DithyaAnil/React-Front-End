@@ -16,7 +16,12 @@ export default function Customers() {
   const location = useLocation();
   const navigate = useNavigate();
   const url = baseUrl + "api/customers/";
-  const { data: { customers } = {}, errorStatus } = useFetch(url, {
+  const {
+    request,
+    appendData,
+    data: { customers } = {},
+    errorStatus,
+  } = useFetch(url, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -25,58 +30,18 @@ export default function Customers() {
   });
 
   useEffect(() => {
-    console.log(customers, errorStatus);
-  });
+    request();
+  }, []);
 
   /*useEffect(() => {
-    const url = baseUrl + "api/customers/";
-    fetch(url, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("access"),
-      },
-    })
-      .then((response) => {
-        if (response.status === 401) {
-          setLoggedIn(false);
-          navigate("/login", {
-            state: {
-              previousUrl: location.pathname,
-            },
-          });
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setCustomers(data.customers);
-      });
-  }, []);
-*/
+    console.log(request, appendData, customers, errorStatus);
+  });*/
+
   function newCustomer(name, industry) {
-    /*
-    const data = { name: name, industry: industry };
-    const url = baseUrl + "api/customers/";
-    fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("something went wrong");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        toggleShow();
-      })
-      .catch((e) => {
-        console.log(e);
-        setCustomers([...customers, data.customer]);
-      });
-  */
+    appendData({ name: name, industry: industry });
+    if (!errorStatus) {
+      toggleShow();
+    }
   }
 
   return (
